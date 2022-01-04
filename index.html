@@ -24,7 +24,8 @@
 
 
     
-    <h1>Warhammer Combat Simulator</h1> 
+    <h1>Warhammer Combat Simulator</h1>
+    <h3>(version 0.2)</h3> 
         <table>
             <tr>
                 <td></td>
@@ -35,32 +36,37 @@
                 <td><strong>Wounds</strong></td>
                 <td><strong>Initiative</strong></td>
                 <td><strong>Attacks</strong></td>
+                <td><strong>Parry</strong></td>
             </tr>
             <tr>
                 <td><strong>Defender</strong></td>
-                <td><input type="text" id="n_d" value="Bertold" minlength="1" maxlength="15" size = 15></td>
+                <td><input type="text" id="n_d" value="Hero" minlength="1" maxlength="15" size = 15></td>
                 <td><input type="number" id="ws_d" value=60 min="1" max="99"></td>
-                <td><input type="number" id="s_d" value=6 min="1" max="10"></td>
-                <td><input type="number" id="t_d" value=10 min="1" max="10"></td>
+                <td><input type="number" id="s_d" value=6 min="1" max="15"></td>
+                <td><input type="number" id="t_d" value=10 min="1" max="15"></td>
                 <td><input type="number" id="w_d" value=13 min="1" max="40"></td>
                 <td><input type="number" id="i_d" value=60 min="20" max="99"></td>
                 <td><input type="number" id="a_d" value=4 min="1" max="10"></td>
+                <td><input type="checkbox" id="parry_d"></td>
             </tr>
             <tr>
                 <td><strong>Attacker</strong></td>
                 <td><input type="text" id="n_a" value="Kaaosmutantti" minlength="1" maxlength="15" size = 15></td>
                 <td><input type="number" id="ws_a" value=65 min="1" max="99"></td>
-                <td><input type="number" id="s_a" value=6 min="1" max="10"></td>
-                <td><input type="number" id="t_a" value=8 min="1" max="10"></td>
+                <td><input type="number" id="s_a" value=6 min="1" max="15"></td>
+                <td><input type="number" id="t_a" value=8 min="1" max="15"></td>
                 <td><input type="number" id="w_a" value=11 min="1" max="40"></td>
-                <td><input type="number" id="i_a" value=40 min="20" max="99"></td>
+                <td><input type="number" id="i_a" value=70 min="20" max="99"></td>
                 <td><input type="number" id="a_a" value=3 min="1" max="10"></td>
+                <td><input type="checkbox" id="parry_a" > </td>
             </tr>
         </table>
         <br>
 
     <!---<input type=text id=teksti>--->
     <button id=set_attributes>Set attributes</button>
+    <button id=set_Bertold>Set Bertold</button>
+    <button id=set_Michael>Set Michael</button>
     <br>
     <button id=round>Round</button>
     <br>
