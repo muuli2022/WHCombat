@@ -14,6 +14,7 @@ class Opponent:
     W: int = 7
     I: int = 40
     A: int = 2
+    parry: str = "off"
 
     def throwDamage(self):
         a = random.randint(1, 6)
@@ -38,10 +39,6 @@ class Opponent:
             damage += roll
 
         return damage + self.S
-    
-
-
-#document <= "Hello"
 
 
 @bind(document["set_attributes"], "click")
@@ -52,6 +49,31 @@ def setAttributes(ev):
 
     docOutput("Attributes set")
 
+@bind(document["set_Bertold"], "click")
+def setAttributes(ev):
+
+    document['n_d'].value = "Bertold"
+    document['ws_d'].value = "69"
+    document['s_d'].value = "7"
+    document['t_d'].value = "12"
+    document['w_d'].value = "13"
+    document['i_d'].value = "63"
+    document['a_d'].value = "4"
+ 
+    docOutput("Bertold set")
+
+@bind(document["set_Michael"], "click")
+def setAttributes(ev):
+
+    document['n_d'].value = "Michael"
+    document['ws_d'].value = "79"
+    document['s_d'].value = "10"
+    document['t_d'].value = "10"
+    document['w_d'].value = "14"
+    document['i_d'].value = "58"
+    document['a_d'].value = "4"
+
+    docOutput("Michael set")
 
 def docOutput(string, styling=None):
     
@@ -97,16 +119,42 @@ def runCombatRound(att_inits, def_inits, attacks):
 
                 message = attacker.name + " hits " + str(cf.findHitLocation(hit))
                 docOutput(message)
+                
+                #docOutput("paikka a.0.5")
+
                 damage = attacker.throwDamage()
 
-                outcome = cf.findHitOutcome(damage, defender.T)
+                parry_outcome = 0
+
+                if defender.parry == "on":
+                    parry_outcome = cf.parryResult(di,defender.WS, defender.A)
+                    di += 1
+                    attacks -= 1
+
+                    if parry_outcome > 0:
+                        message = defender.name + " parried " + str(parry_outcome) + " points of damage."
+                        docOutput(message)
+                    else:
+                        message = defender.name + "'s parry was unsuccesful."
+                        docOutput(message)
+
+                #docOutput("paikka a.2")
+
+                outcome = cf.findHitOutcome(damage, defender.T, parry_outcome) 
+
+                #docOutput("paikka a.3")
 
                 message = attacker.name + " did " + str(damage) + " points damage and " + defender.name + " lost " + str(outcome) + " wounds"
                 docOutput(message)
                 defender.W -= outcome
 
                 if defender.W < 0:
-                    return defender.name + " has " + str(defender.W) + " wounds.Throw a critical!" 
+                    temp = str(defender.W)
+
+                    criticalHit = "+" + temp[1:]
+                    defender.W = 0
+
+                    return defender.name + " suffers " + criticalHit + " critical hit. Throw a critical effect!"
                 else:
                     message = defender.name + " has " + str(defender.W) + " wounds left."
                     docOutput(message)
@@ -133,19 +181,46 @@ def runCombatRound(att_inits, def_inits, attacks):
             docOutput(message)
 
             if hit <= defender.WS:
-
+                parry_outcome = 0
                 message = defender.name + " hits " + str(cf.findHitLocation(hit))
                 docOutput(message)
+                #docOutput("paikka d.0.5")
                 damage = defender.throwDamage()
 
-                outcome = cf.findHitOutcome(damage, attacker.T)
+                parry_outcome = 0
 
+                if attacker.parry == "on":
+                    parry_outcome = cf.parryResult(ai,attacker.WS, attacker.A)
+                    ai += 1
+                    attacks -= 1
+
+                    if parry_outcome > 0:
+                        message = attacker.name + " parried " + str(parry_outcome) + " points of damage."
+                        docOutput(message)
+                    else:
+                        message = attacker.name + "'s parry was unsuccesful."
+                        docOutput(message)
+
+
+
+                #docOutput("paikka d.1")
+                outcome = cf.findHitOutcome(damage, attacker.T, parry_outcome)
+                #docOutput("paikka d.2")
                 message = defender.name + " did " + str(damage) + " points damage and " + attacker.name + " lost " + str(outcome) + " wounds"
+                #docOutput("paikka d.3")
+                
                 docOutput(message)
                 attacker.W -= outcome
 
                 if attacker.W < 0:
-                    return attacker.name + " has " + str(attacker.W) + " wounds.Throw a critical!" 
+                    
+                    temp = str(attacker.W)
+
+                    criticalHit = "+" + temp[1:]
+                    attacker.W = 0
+
+                    return attacker.name + " suffers " + criticalHit + " critical hit. Throw a critical effect!"
+                     
                 else:
                     message = attacker.name + " has " + str(attacker.W) + " wounds left."
                     docOutput(message)
@@ -183,7 +258,20 @@ def round(ev):
 
 
     document["output"].scrollTop = document["output"].scrollHeight
-    
+
+@bind(document["parry_a"], "click")
+def checkboxtest(ev):
+    if attacker.parry == "off":
+        attacker.parry = "on"
+    else:
+        attacker.parry = "off"
+
+@bind(document["parry_d"], "click")
+def checkboxtest(ev):
+    if defender.parry == "off":
+        defender.parry = "on"
+    else:
+        defender.parry = "off"
 
 # Program running starts here
 

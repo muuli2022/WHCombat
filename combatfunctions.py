@@ -46,9 +46,9 @@ def findHitLocation(hit : int):
         else:
             i += 1
 
-def findHitOutcome(damage, defence):
-    if damage > defence:
-        return damage - defence
+def findHitOutcome(damage, defence, parry):
+    if damage > defence + parry:
+        return damage - defence - parry
     else:
         return 0
 
@@ -66,3 +66,17 @@ def checkFumble(hit : int):
         return "Fumble!"
 
     return "Miss!"
+
+def parryResult(att_nbr, ws, attacks):
+
+    parry_dmg = 0
+
+    if att_nbr < attacks:
+        proll = random.randint(1,100)
+                    
+        if ws >= proll:
+            parry_dmg = random.randint(1,6)
+        else:
+            parry_dmg = 0
+
+    return parry_dmg
